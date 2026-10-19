@@ -1,0 +1,57 @@
+# Must match the 'secret' in plugins/skyblockplus/config.properties on Velocity
+secret: "change-me"
+# Seconds between full re-syncs to the proxy (minimum 60). The proxy only needs this for /vfp list
+# and the server-list player count, so a long interval is fine.
+sync-interval-seconds: 300
+# Auto-save fake player data (inventory, position...) every N seconds (minimum 60).
+# Saving is batched and the file is written off the main thread.
+autosave-seconds: 300
+suppress-join-quit-messages: false
+auto-respawn: true
+defaults:
+  gamemode: SURVIVAL
+  ping: 0
+  listed: true
+  autospawn: true
+
+# ---- Performance ----
+performance:
+  # An idle (movement: STAND) fake player standing on the ground only runs the full game tick every
+  # N ticks. It goes back to every-tick the moment it takes damage, falls, swims, burns, opens a
+  # menu, is moved, etc. 1 = off (tick every tick like a normal player). 4 is a good value.
+  idle-tick-interval: 4
+  # Always tick every tick for this many ticks after spawning (lets the player finish joining).
+  warmup-ticks: 200
+  # How many chunks around a fake player are loaded/sent/simulated (2-32). The server default is
+  # usually 8-10, which makes every fake player cost as much as a real one. Set to 0 to leave the
+  # server default (needed if you want a fake player to keep a big area active, e.g. an AFK farm).
+  view-distance: 2
+  simulation-distance: 2
+
+# When someone runs one of these commands on a fake player, the fake runs the accept command(s)
+auto-accept-tpa: true
+auto-accept-delay-ticks: 10
+tpa-commands: [tpa, tpahere, tpask, tpaskhere, call]
+accept-commands: [tpaccept]   # {player} = the sender's name
+
+# ---- Auto-click menus for fake players ----
+# When a menu (GUI) opens for a fake player, the plugin clicks the first item that matches a rule.
+# Rules are tried top to bottom. Every field is optional; leave out what you don't care about.
+#   title:    part of the menu title (not case sensitive)
+#   material: exact item material, e.g. LIME_STAINED_GLASS_PANE
+#   name:     part of the item's display name (not case sensitive)
+#   slot:     exact slot number, starting at 0 (top-left)
+auto-click-gui:
+  enabled: true
+  delay-ticks: 3
+  click-type: LEFT        # LEFT, RIGHT, SHIFT_LEFT
+  rules:
+    - material: LIME_STAINED_GLASS_PANE
+    - material: LIME_STAINED_GLASS
+    - material: GREEN_STAINED_GLASS_PANE
+    - material: GREEN_STAINED_GLASS
+    # Examples:
+    # - title: "tpa request"
+    #   name: "accept"
+    # - title: "confirm"
+    #   slot: 15
